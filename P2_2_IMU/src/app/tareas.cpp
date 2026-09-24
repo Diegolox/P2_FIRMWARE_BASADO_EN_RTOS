@@ -3,20 +3,6 @@
 #include "hal/LED.h"
 #include "sensors/BNO055.h"
 
-
-/*
-    xTaskCreate(
-        task_hola_mundo,   // Función que ejecutará la tarea
-        "HolaMundo",       // Nombre para identificarla
-        2048,              // Memoria de pila para esta tarea, en bytes en ESP32
-        nullptr,           // Dato opcional que se pasa a la función
-        1,                 // Prioridad
-        nullptr            // Dónde guardar su identificador, si lo necesitas
-    );
-
-
-*/
-
 void task_hola_mundo(void *parameter) {
     while (true) {
         Serial.println("Hola mundo");
