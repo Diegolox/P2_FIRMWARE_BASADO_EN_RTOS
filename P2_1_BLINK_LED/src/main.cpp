@@ -1,42 +1,15 @@
 #include <Arduino.h>
-
-
-void Tarea1( void * parameter )
-{
-
-    for( int i = 0;i<10;i++ ){
-
-        Serial.println("Hola desde la tarea 1");
-        delay(500);
-    }
-
-    Serial.println("Finalizando tarea 1");
-    vTaskDelete( NULL );
-
-}
-
-void Tarea2( void * parameter)
-{
-
-    for( int i = 0;i<5;i++ ){
-
-        Serial.println("Hola desde la tarea 2");
-        delay(1000);
-    }
-    Serial.println("Finalizando tarea 2");
-    vTaskDelete( NULL );
-}
+#include "config.h"
+#include "hal/LED.h"
+#include "app/tareas.h"
 
 void setup() {
+    Serial.begin(BAUDRATE_SERIAL);
+    init_led_ESP32();
 
-  Serial.begin(115200);
-  delay(1000);
-
-  xTaskCreate(Tarea1,"Tarea1",10000,NULL,1,NULL);
-  xTaskCreate(Tarea2,"Tarea2",10000,NULL,1,NULL);
-
+    init_task_hola_mundo();
+    init_task_blink_led();
 }
 
 void loop() {
-  delay(1000);
 }
