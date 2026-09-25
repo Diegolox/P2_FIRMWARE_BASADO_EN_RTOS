@@ -44,6 +44,7 @@ void task_print_IMU(void *parameter){
     }
 }
 
+
 void init_task_print_IMU() {
     if (!initBNO055()) {
         Serial.println("ERROR: no se ha encontrado el BNO055");
@@ -53,7 +54,6 @@ void init_task_print_IMU() {
     Serial.println("BNO055 iniciado");
     xTaskCreate(task_print_IMU, "PRINT_IMU", 4096, nullptr, 1, nullptr);
 }
-
 
 void init_task_hola_mundo() {
     xTaskCreate(task_hola_mundo, "HOLA_MUNDO", 4096, nullptr, 1, nullptr);
