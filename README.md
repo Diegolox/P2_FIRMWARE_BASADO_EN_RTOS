@@ -75,6 +75,9 @@ void init_task_blink_led() {
        alt="Estructura de archivos del proyecto">
 </picture>
 
+
+
+
 - `src/app/tareas.cpp`: funciones de tarea y creación con `xTaskCreate()`.
 - `src/hal/LED.cpp`: control del LED.
 - `src/sensors/BNO055.cpp`: lectura del sensor en la práctica con IMU.
