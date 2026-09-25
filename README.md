@@ -65,7 +65,16 @@ void init_task_blink_led() {
 ```
 
 ## Arquitectura del proyecto
-[METER AQUI FOTO DE CANVA CON ESQUEMA]
+
+<picture>
+  <source media="(prefers-color-scheme: dark)"
+          srcset="doc/img/ESQUEMA_OSCURO.svg">
+  <source media="(prefers-color-scheme: light)"
+          srcset="doc/img/ESQUEMA_CLARO.svg">
+  <img src="doc/img/ESQUEMA_CLARO.svg"
+       alt="Estructura de archivos del proyecto">
+</picture>
+
 - `src/app/tareas.cpp`: funciones de tarea y creación con `xTaskCreate()`.
 - `src/hal/LED.cpp`: control del LED.
 - `src/sensors/BNO055.cpp`: lectura del sensor en la práctica con IMU.
