@@ -3,7 +3,7 @@ Este repositorio pertenece a la segunda práctica de laboratorio de comunicacion
 
 ## P2_2_IMU
 
-Añade una tarea que lee el BNO055 cada 100 ms y envía una línea con seis medidas cada diez lecturas por terminal serial. Si el sensor no se inicializa, la tarea no se crea. En conjunto con las lecturas del IMU se envía cada segundo por UART un mensaje que pone "Hola mundo" al mismo tiempo que hace parpadear un led cada 200ms.
+Añade una tarea que lee el BNO055 cada 100 ms y envía una línea con seis medidas cada diez lecturas por terminal serial respecto al P2_1. Si el sensor no se inicializa, la tarea no se crea. En conjunto con las lecturas del IMU se envía cada segundo por UART un mensaje que pone "Hola mundo" al mismo tiempo que hace parpadear un led cada 200ms.
 
 Código de [`P2_2_IMU/src/app/tareas.cpp`](P2_2_IMU/src/app/tareas.cpp):
 
