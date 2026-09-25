@@ -9,7 +9,7 @@ void setup() {
 
     init_task_hola_mundo();
     init_task_blink_led();
-    init_task_print_IMU();
+    init_task_read_IMU();
 }
 
 void loop() {
