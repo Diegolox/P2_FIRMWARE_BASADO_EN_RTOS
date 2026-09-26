@@ -65,7 +65,7 @@ void init_task_read_IMU() {
 ```
 En el código anterior se crea un mutex, un tipo de semáforo que permite que solo una tarea acceda a `ultimaIMU` en cada momento. Antes de leer o actualizar la estructura, cada tarea solicita el mutex con `xSemaphoreTake()`. Si la otra tarea lo está usando, espera hasta que quede libre. Al terminar la copia, lo libera con `xSemaphoreGive()`.
 
-Esto evita que `task_print_IMU` lea los datos mientras `task_read_IMU` los está actualizando. El mutex no impide que el sistema cambie de tarea: protege el acceso a los datos compartidos para que siempre se copie una muestra completa. Además, se libera antes de imprimir por Serial para no mantener bloqueada la tarea de lectura durante la transmisión.
+Esto evita que `task_print_IMU` lea los datos mientras `task_read_IMU` los está actualizando. El mutex no impide que el sistema cambie de tarea, si no que protege el acceso a los datos compartidos para que siempre se copie una muestra completa. Además, se libera antes de imprimir por Serial para no mantener bloqueada la tarea de lectura durante la transmisión.
 ## Arquitectura del proyecto
 
 <picture>
