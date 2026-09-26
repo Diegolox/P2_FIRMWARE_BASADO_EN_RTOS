@@ -9,58 +9,56 @@ Código de [`P2_2_IMU/src/app/tareas.cpp`](P2_2_IMU/src/app/tareas.cpp):
 
 ```cpp
 #include <Arduino.h>
-#include "app/tareas.h"
-#include "hal/LED.h"
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <freertos/semphr.h>
 #include "sensors/BNO055.h"
 
-void task_hola_mundo(void *parameter) {
+static DatosBNO055 ultimaIMU{};
+static SemaphoreHandle_t mutexIMU = nullptr;
+
+// Lee el sensor cada 100 ms y actualiza el dato compartido.
+void task_read_IMU(void *parameter) {
+    TickType_t inicio = xTaskGetTickCount();
+
     while (true) {
-        Serial.println("Hola mundo");
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        DatosBNO055 datos = leerBNO055();  // Lectura I2C fuera del mutex
+
+        xSemaphoreTake(mutexIMU, portMAX_DELAY);
+        ultimaIMU = datos;
+        xSemaphoreGive(mutexIMU);
+
+        vTaskDelayUntil(&inicio, pdMS_TO_TICKS(100));
     }
 }
 
-void task_blink_led(void *parameter) {
+// Cada segundo copia la última muestra y la muestra por Serial.
+void task_print_IMU(void *parameter) {
+    TickType_t inicio = xTaskGetTickCount();
+
     while (true) {
-        encender_led();
-        vTaskDelay(pdMS_TO_TICKS(100));
-        apagar_led();
-        vTaskDelay(pdMS_TO_TICKS(100));
+        vTaskDelayUntil(&inicio, pdMS_TO_TICKS(1000));
+
+        DatosBNO055 datos;
+        xSemaphoreTake(mutexIMU, portMAX_DELAY);
+        datos = ultimaIMU;
+        xSemaphoreGive(mutexIMU);
+
+        Serial.printf("%.2f;%.2f;%.2f;%.2f;%.2f;%.2f\n",
+                      datos.rumbo, datos.roll, datos.pitch,
+                      datos.accX, datos.accY, datos.accZ);
     }
 }
 
-void task_print_IMU(void *parameter){
-    int i = 0;
-    while (true){
-        DatosBNO055 datos = leerBNO055();
-        i += 1;
-        if (i >= 10){
-            Serial.printf("%.2f;%.2f;%.2f;%.2f;%.2f;%.2f\n",
-                        datos.rumbo, datos.roll, datos.pitch,
-                        datos.accX, datos.accY, datos.accZ);
-            i = 0;
-        }
-        vTaskDelay(pdMS_TO_TICKS(100));
-    }
-}
+// Se llama una vez desde setup(), después de Serial.begin().
+void init_task_read_IMU() {
+    if (!initBNO055()) return;
 
+    mutexIMU = xSemaphoreCreateMutex();
+    if (mutexIMU == nullptr) return;
 
-void init_task_print_IMU() {
-    if (!initBNO055()) {
-        Serial.println("ERROR: no se ha encontrado el BNO055");
-        return;
-    }
-
-    Serial.println("BNO055 iniciado");
+    xTaskCreate(task_read_IMU,  "READ_IMU",  4096, nullptr, 2, nullptr);
     xTaskCreate(task_print_IMU, "PRINT_IMU", 4096, nullptr, 1, nullptr);
-}
-
-void init_task_hola_mundo() {
-    xTaskCreate(task_hola_mundo, "HOLA_MUNDO", 4096, nullptr, 1, nullptr);
-}
-
-void init_task_blink_led() {
-    xTaskCreate(task_blink_led, "BLINK_LED", 2048, nullptr, 1, nullptr);
 }
 ```
 
