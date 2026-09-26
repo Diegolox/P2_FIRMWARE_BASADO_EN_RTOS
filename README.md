@@ -28,6 +28,8 @@ void task_read_IMU(void *parameter) {
         ultimaIMU = datos;
         xSemaphoreGive(mutexIMU);
 
+        // Calcula el periodo en el cual se tiene que ejecutar la siguiente tarea
+        // teniendo en cuenta cuanto ha tardado en ejecutarse esta tarea.
         vTaskDelayUntil(&inicio, pdMS_TO_TICKS(100));
     }
 }
