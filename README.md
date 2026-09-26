@@ -63,7 +63,7 @@ void init_task_read_IMU() {
     xTaskCreate(task_print_IMU, "PRINT_IMU", 4096, nullptr, 1, nullptr);
 }
 ```
-En el código anterior se puede ver que se ha creado un mutex para evitar que la tarea de impresión lea los datos mientras la tarea de lectura los está actualizando. El mutex no impide que el sistema cambie de tarea; protege el acceso a la estructura compartida `ultimaIMU` para que siempre se copie una muestra completa. Se libera antes de imprimir por Serial, evitando mantener bloqueada la tarea de lectura durante la transmisión.
+En el código anterior se puede ver que se ha creado un mutex para evitar que la tarea de impresión lea los datos mientras la tarea de lectura los está actualizando. El mutex no impide que el sistema cambie de tarea, si no que protege el acceso a la estructura compartida `ultimaIMU` para que siempre se copie una muestra completa. Se libera antes de imprimir por Serial, evitando mantener bloqueada la tarea de lectura durante la transmisión.
 ## Arquitectura del proyecto
 
 <picture>
