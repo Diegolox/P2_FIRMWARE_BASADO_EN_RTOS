@@ -100,14 +100,14 @@ void init_task_read_IMU() {
 
     TaskHandle_t tareaLectura = nullptr;
 
-    // Crea tarea que lee periodicamente el IMU
+    // Crea tarea que LEE periodicamente el IMU
     if (xTaskCreate(task_read_IMU, "READ_IMU", 4096,
                     nullptr, 2, &tareaLectura) != pdPASS) {
         Serial.println("ERROR: no se ha podido crear la tarea de lectura IMU");
         return;
     }
 
-    // Crea tarea que envia por pantalla periodicamente el IMU
+    // Crea tarea que ENVIA por pantalla periodicamente el IMU
     if (xTaskCreate(task_print_IMU, "PRINT_IMU", 4096,
                     nullptr, 1, nullptr) != pdPASS) {
         vTaskDelete(tareaLectura);
